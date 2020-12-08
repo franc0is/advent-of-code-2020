@@ -39,7 +39,12 @@ impl VM {
     fn execute_instruction(&mut self, opcode: &str, imm: i32) {
         match opcode {
             "nop" => {
-                self.pc = self.pc + 1;
+                if self.state == VMState::PatchPending {
+                    self.apply_patch();
+                    self.pc = self.pc + imm;
+                } else {
+                    self.pc = self.pc + 1;
+                }
             },
             "jmp" => {
                 if self.state == VMState::PatchPending {
