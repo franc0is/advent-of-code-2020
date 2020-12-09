@@ -29,7 +29,6 @@ impl VM {
         self.patched_pc = self.pc;
         self.patched_acc = self.acc;
         self.state = VMState::Patched;
-        self.pc = self.pc + 1;
     }
 
     fn enable_patch(&mut self) {
@@ -49,6 +48,7 @@ impl VM {
             "jmp" => {
                 if self.state == VMState::PatchPending {
                     self.apply_patch();
+                    self.pc = self.pc + 1;
                 } else {
                     self.pc = self.pc + imm;
                 }
