@@ -4,7 +4,7 @@ use std::{
 };
 
 use itertools::Itertools;
-use gamma::graph::{ Graph, DefaultGraph, Error };
+use gamma::graph::{ Graph, DefaultGraph };
 use std::collections::{HashMap};
 
 fn main() {
@@ -26,12 +26,12 @@ fn main() {
     // part 2
     let mut graph = DefaultGraph::new();
     let mut trailing: Vec<usize> = [0].to_vec();
-    graph.add_node(0);
+    graph.add_node(0).unwrap();
     for adapter in adapters.clone() {
-        graph.add_node(adapter);
+        graph.add_node(adapter).unwrap();
         for node in &trailing {
             if adapter - node <= 3 {
-                graph.add_edge(adapter, *node);
+                graph.add_edge(adapter, *node).unwrap();
             }
         }
         trailing.push(adapter);
@@ -40,8 +40,8 @@ fn main() {
         }
     }
     let last = adapters.last().unwrap();
-    graph.add_node(last + 3);
-    graph.add_edge(last, last + 3);
+    graph.add_node(last + 3).unwrap();
+    graph.add_edge(last, last + 3).unwrap();
 
     fn get_children(graph: &DefaultGraph, node: &usize) -> Vec<usize> {
         let children: Vec<usize> = graph.neighbors(*node).unwrap().iter().filter(|n| *n > node).map(|n| *n).collect();
