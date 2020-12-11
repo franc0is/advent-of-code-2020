@@ -7,6 +7,26 @@ use itertools::Itertools;
 use gamma::graph::{ Graph, DefaultGraph };
 use std::collections::{HashMap};
 
+fn get_children(graph: &DefaultGraph, node: &usize) -> Vec<usize> {
+    // graph library gives me neighbors, which includes parents
+    let children: Vec<usize> = graph.neighbors(*node).unwrap().iter().filter(|n| *n > node).map(|n| *n).collect();
+    return children
+}
+
+fn count_paths(graph: &DefaultGraph, paths_cache: &mut HashMap<usize, u64>, start: usize, end: usize) -> u64 {
+    if start >= end {
+        return 1;
+    }
+
+    if !paths_cache.contains_key(&start) {
+        let children = get_children(graph, &start);
+        let p = children.iter().fold(0, |acc, child| acc + count_paths(graph, paths_cache, *child, end));
+        paths_cache.insert(start, p);
+    }
+
+    return *paths_cache.get(&start).unwrap();
+}
+
 fn main() {
     let f = File::open("input.txt").expect("Unable to open input");
     let buf = BufReader::new(f);
@@ -24,6 +44,7 @@ fn main() {
     println!("part 1 {}", sums[0] * sums[2]);
 
     // part 2
+    // Build graph
     let mut graph = DefaultGraph::new();
     let mut trailing: Vec<usize> = [0].to_vec();
     graph.add_node(0).unwrap();
@@ -38,26 +59,6 @@ fn main() {
         if trailing.len() > 3 {
             trailing.remove(0);
         }
-    }
-
-    fn get_children(graph: &DefaultGraph, node: &usize) -> Vec<usize> {
-        // graph library gives me neighbors, which includes parents
-        let children: Vec<usize> = graph.neighbors(*node).unwrap().iter().filter(|n| *n > node).map(|n| *n).collect();
-        return children
-    }
-
-    fn count_paths(graph: &DefaultGraph, paths_cache: &mut HashMap<usize, u64>, start: usize, end: usize) -> u64 {
-        if start >= end {
-            return 1;
-        }
-
-        if !paths_cache.contains_key(&start) {
-            let children = get_children(graph, &start);
-            let p = children.iter().fold(0, |acc, child| acc + count_paths(graph, paths_cache, *child, end));
-            paths_cache.insert(start, p);
-        }
-
-        return *paths_cache.get(&start).unwrap();
     }
 
     let mut paths_cache: HashMap<usize, u64> = HashMap::new();
