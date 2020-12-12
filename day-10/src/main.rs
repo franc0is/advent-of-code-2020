@@ -7,10 +7,19 @@ use itertools::Itertools;
 use gamma::graph::{ Graph, DefaultGraph };
 use std::collections::{HashMap};
 
-fn get_children(graph: &DefaultGraph, node: &usize) -> Vec<usize> {
-    // graph library gives me neighbors, which includes parents
-    let children: Vec<usize> = graph.neighbors(*node).unwrap().iter().filter(|n| *n > node).map(|n| *n).collect();
-    return children
+trait GetChildren {
+    fn children(&self, node: &usize) -> Vec<usize>;
+}
+
+impl GetChildren for DefaultGraph {
+    fn children(&self, node: &usize) -> Vec<usize> {
+        let children: Vec<usize> = self.neighbors(*node).unwrap()
+                                       .iter()
+                                       .filter(|n| *n > node)
+                                       .map(|n| *n)
+                                       .collect();
+        return children;
+    }
 }
 
 fn count_paths(graph: &DefaultGraph, paths_cache: &mut HashMap<usize, u64>, start: usize, end: usize) -> u64 {
@@ -19,7 +28,7 @@ fn count_paths(graph: &DefaultGraph, paths_cache: &mut HashMap<usize, u64>, star
     }
 
     if !paths_cache.contains_key(&start) {
-        let children = get_children(graph, &start);
+        let children = graph.children(&start);
         let p = children.iter().fold(0, |acc, child| acc + count_paths(graph, paths_cache, *child, end));
         paths_cache.insert(start, p);
     }
