@@ -57,60 +57,27 @@ fn main() {
 
         // PART 1
         //match direction {
-        //    "N" => {
-        //        ship.go(PI / 2.0, amount);
-        //    },
-        //    "S" => {
-        //        ship.go(3.0 * PI / 2.0, amount);
-        //    },
-        //    "E" => {
-        //        ship.go(0.0, amount);
-        //    },
-        //    "W" => {
-        //        ship.go(PI, amount);
-        //    },
-        //    "R" => {
-        //        ship.rotate(amount.to_radians() * -1.0);
-        //    },
-        //    "L" => {
-        //        ship.rotate(amount.to_radians());
-        //    },
-        //    "F" => {
-        //        ship.go(ship.heading, amount);
-        //    },
-        //    _ => {
-        //        panic!("{} is not a valid direction", direction);
-        //    }
+        //    "N" => ship.go(PI / 2.0, amount),
+        //    "S" => ship.go(3.0 * PI / 2.0, amount),
+        //    "E" => ship.go(0.0, amount),
+        //    "W" => ship.go(PI, amount),
+        //    "R" => ship.rotate(amount.to_radians() * -1.0),
+        //    "L" => ship.rotate(amount.to_radians()),
+        //    "F" => ship.go(ship.heading, amount),
+        //    _ => panic!("{} is not a valid direction", direction),
         //}
-
 
         // PART 2
         match direction {
-            "N" => {
-                waypoint.go(PI / 2.0, amount);
-            },
-            "S" => {
-                waypoint.go(3.0 * PI / 2.0, amount);
-            },
-            "E" => {
-                waypoint.go(0.0, amount);
-            },
-            "W" => {
-                waypoint.go(PI, amount);
-            },
-            "R" => {
-                waypoint.rotate(2.0 * PI - amount.to_radians());
-            },
-            "L" => {
-                waypoint.rotate(amount.to_radians());
-            },
-            "F" => {
-                ship.go((waypoint.y).atan2(waypoint.x),
-                        amount * (waypoint.y.powi(2) + waypoint.x.powi(2)).sqrt());
-            },
-            _ => {
-                panic!("{} is not a valid direction", direction);
-            }
+            "N" => waypoint.go(PI / 2.0, amount),
+            "S" => waypoint.go(3.0 * PI / 2.0, amount),
+            "E" => waypoint.go(0.0, amount),
+            "W" => waypoint.go(PI, amount),
+            "R" => waypoint.rotate(2.0 * PI - amount.to_radians()),
+            "L" => waypoint.rotate(amount.to_radians()),
+            "F" => ship.go((waypoint.y).atan2(waypoint.x),
+                           amount * (waypoint.y.powi(2) + waypoint.x.powi(2)).sqrt()),
+            _ => panic!("{} is not a valid direction", direction),
         }
     }
 
