@@ -19,11 +19,7 @@ impl Ship {
     }
 
     fn rotate(&mut self, amount: f32) -> () {
-        if amount < -0.0 {
-            self.heading = (self.heading + (2.0 * PI + amount)) % (2.0 * PI);
-        } else {
-            self.heading = (self.heading + amount) % (2.0 * PI);
-        }
+        self.heading = (self.heading + amount) % (2.0 * PI);
     }
 }
 
@@ -88,7 +84,7 @@ fn main() {
         //}
 
 
-        // part 2
+        // PART 2
         match direction {
             "N" => {
                 waypoint.go(PI / 2.0, amount);
@@ -103,7 +99,7 @@ fn main() {
                 waypoint.go(PI, amount);
             },
             "R" => {
-                waypoint.rotate(amount.to_radians() * -1.0);
+                waypoint.rotate(2.0 * PI - amount.to_radians());
             },
             "L" => {
                 waypoint.rotate(amount.to_radians());
@@ -118,5 +114,8 @@ fn main() {
         }
     }
 
-    println!("Ship is at ( {}, {} ), result {}", ship.x, ship.y, ship.x.abs() + ship.y.abs());
+    println!("Ship is at ( {}, {} ), result {}", 
+                ship.x.round() as i32,
+                ship.y.round() as i32,
+                (ship.x.abs() + ship.y.abs()).round() as i32);
 }
