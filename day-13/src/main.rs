@@ -47,8 +47,6 @@ fn main() {
     loop {
         let bus = &buses[idx];
         t += stride;
-        // I don't think this is quite correct, but it works with the input
-        // It doesn't handle the case where index > time completely right
         if t % bus.time == bus.time - bus.index % bus.time {
             stride = num_integer::lcm(bus.time, stride);
             idx += 1;
