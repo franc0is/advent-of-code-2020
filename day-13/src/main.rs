@@ -3,7 +3,7 @@ use std::{
     io::{prelude::*, BufReader}
 };
 
-use num::integer;
+use num_integer;
 
 fn main() {
     let f = File::open("input.txt").expect("Unable to open input");
@@ -50,7 +50,7 @@ fn main() {
         // I don't think this is quite correct, but it works with the input
         // It doesn't handle the case where index > time completely right
         if t % bus.time == bus.time - bus.index % bus.time {
-            stride = integer::lcm(bus.time, stride);
+            stride = num_integer::lcm(bus.time, stride);
             idx += 1;
         }
         if idx > buses.len() - 1 {
