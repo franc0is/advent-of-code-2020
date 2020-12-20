@@ -45,13 +45,10 @@ struct Calculator {
 
 impl Calculator {
     fn new() -> Self {
-        let mut inst = Calculator { ops: VecDeque::new(), result: 0 };
-        return inst;
+        return Calculator { ops: VecDeque::new(), result: 0 };
     }
 
     fn compute(&mut self) -> u64 {
-        print!("COMPUTE ");
-
         let op = &self.ops[0];
 
         let is_mul = op.t == OpType::MUL;
@@ -76,7 +73,6 @@ impl Calculator {
     }
 
     fn pop(&mut self) -> () {
-        print!("POP ");
         let mut result = self.result;
 
         if self.ops[0].args.len() == 1 {
@@ -96,14 +92,11 @@ impl Calculator {
         if self.ops.is_empty() {
             return;
         }
-        print!("PUSH ");
         self.ops.push_front(Operation::new());
     }
 
     fn set_arg(&mut self, c: char) -> () {
-        print!("SETARG ");
         if self.ops.is_empty() {
-            print!("NEW ");
             self.ops.push_front(Operation::new());
         }
         let n: u64 = c.to_digit(10).unwrap().into();
@@ -111,7 +104,6 @@ impl Calculator {
     }
 
     fn set_op_type(&mut self, c: char) -> () {
-        print!("SETOPT ");
         assert!(self.ops[0].t == OpType::NONE);
         self.ops[0].t = OpType::from_char(c);
         if self.ops[0].t == OpType::MUL {
@@ -123,7 +115,6 @@ impl Calculator {
 fn compute_line(line: &str) -> u64 {
     let mut calc = Calculator::new();
     for c in line.chars() {
-        print!("{} : ", c);
         match c {
             ' ' => continue,
             '(' => calc.push(),
@@ -138,17 +129,16 @@ fn compute_line(line: &str) -> u64 {
             calc.ops[0].args.push(calc.result);
         }
 
-        print!("\t\t{:?}\n", calc.ops);
+        //print!("\t\t{:?}\n", calc.ops);
     }
 
-    println!("------ Finishing ------");
     if !calc.ops.is_empty() {
         calc.pop();
         while !calc.ops.is_empty() && calc.ops[0].args.len() == 2 {
             calc.result = calc.compute();
             calc.ops[0].args.push(calc.result);
         }
-        print!("\t\t{:?}\n", calc.ops);
+        // print!("\t\t{:?}\n", calc.ops);
     }
 
     return calc.result;
