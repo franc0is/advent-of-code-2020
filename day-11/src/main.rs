@@ -247,7 +247,7 @@ fn step(seatmap: &SeatMap) -> Option<SeatMap> {
     let mut changes = 0;
     let next = seatmap.seats.iter().enumerate().map(|(ii, seat)| {
         let i = ii as i32;
-        let p = Point {x: i % seatmap.width, y: i / seatmap.height };
+        let p = Point {x: i % seatmap.width, y: i / seatmap.width };
         match seat {
             SeatState::FLOOR => SeatState::FLOOR,
             SeatState::EMPTY => {
